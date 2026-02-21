@@ -274,6 +274,20 @@ document.addEventListener('DOMContentLoaded', function() {
         
         showVoxMessage("CONTRATO REGISTRADO • BOA CAÇA, INQUISIDOR");
     });
+
+    // Tocar tic-tac a cada segundo do timer
+    function playTickSound() {
+      if (!tickEnabled || !timerRunning) return;
+      
+      const now = Date.now();
+      // Evitar sobreposição de sons (debounce de 900ms)
+      if (now - lastTickTime > 900) {
+        tickSound.currentTime = 0;
+        tickSound.volume = 0.15; // Baixo volume para não incomodar
+        tickSound.play().catch(e => console.log("Tick offline:", e));
+        lastTickTime = now;
+      }
+    }
     
     // Mostrar mensagem no estilo vox-caster
     function showVoxMessage(message) {
@@ -343,6 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Iniciar intervalo do timer
         timerInterval = setInterval(() => {
             timerSeconds++;
+            playTickSound();
             timerDisplay.textContent = formatTime(timerSeconds);
             
             // Atualizar tempo gasto na missão
@@ -391,6 +406,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Restaurar animação do relógio para tempo real
         updateClockHands();
+
+        // Pausar som de tic-tac
+        if (tickSound) {
+          tickSound.pause();
+          tickSound.currentTime = 0;
+        }
     }
     
     // Retomar timer
@@ -474,6 +495,42 @@ document.addEventListener('DOMContentLoaded', function() {
         pauseTimerBtn.disabled = true;
         resetTimerBtn.disabled = true;
         pauseTimerBtn.innerHTML = '<i class="fas fa-pause"></i> SUSPENDER';
+
+        //Inicio
+
+        // Toggle música de fundo
+        toggleMusicBtn?.addEventListener('click', function() {
+          musicEnabled = !musicEnabled;
+          
+          if (musicEnabled) {
+            bgMusic.volume = parseFloat(musicVolumeSlider.value);
+            bgMusic.play().catch(e => {
+              console.log("Música bloqueada pelo navegador:", e);
+              musicEnabled = false;
+              showVoxMessage("⚠ Interação necessária para áudio");
+            });
+            toggleMusicBtn.innerHTML = '<i class="fas fa-volume-up"></i>';
+            toggleMusicBtn.style.borderColor = 'var(--aqua-gold)';
+            showVoxMessage("🎵 Hinos da Inquisição: ATIVADOS");
+          } else {
+            bgMusic.pause();
+            toggleMusicBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            toggleMusicBtn.style.borderColor = '';
+            showVoxMessage("🔇 Silêncio tático: ATIVADO");
+          }
+        });
+        
+        // Controle de volume
+        musicVolumeSlider?.addEventListener('input', function() {
+          bgMusic.volume = parseFloat(this.value);
+        });
+        
+        // Inicializar volume
+        if (bgMusic) {
+          bgMusic.volume = 0.3;
+        }
+        
+        //fim
     }
     
     // Alternar conclusão da missão
