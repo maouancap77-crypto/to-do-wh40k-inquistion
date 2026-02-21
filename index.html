@@ -101,10 +101,29 @@
         </footer>
     </div>
 
-    <!-- Efeitos sonoros opcionais -->
+    <!-- Efeitos sonoros -->
     <audio id="vox-audio" preload="auto">
-        <source src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" type="audio/mpeg">
+      <source src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" type="audio/mpeg">
     </audio>
+
+    <!-- Som de tic-tac (clock mechanism) -->
+    <audio id="tick-sound" preload="auto" loop>
+      <source src="https://assets.mixkit.co/sfx/preview/mixkit-clock-tick-932.mp3" type="audio/mpeg">
+    </audio>
+    
+    <!-- Música de fundo (substitua pelo seu arquivo) -->
+    <audio id="bg-music" preload="auto" loop>
+      <source src="https://cdn.pixabay.com/audio/2022/03/10/audio_5c83c7c692.mp3" type="audio/mpeg"> <!-- substituir com a url da música aqui. -->
+    </audio>
+    
+    <!-- Controles de áudio (opcional, para UI) -->
+    <div class="audio-controls" style="position:fixed;bottom:60px;right:20px;z-index:600;display:flex;gap:8px;align-items:center;">
+      <button id="toggle-music" class="btn-chrono" style="padding:6px 12px;font-size:0.8rem;" title="Alternar Música">
+        <i class="fas fa-music"></i>
+      </button>
+      <input type="range" id="music-volume" min="0" max="1" step="0.1" value="0.3" 
+             style="width:80px;accent-color:var(--aqua-gold);" title="Volume">
+    </div>
 
     <script src="script.js"></script>
 </body>
