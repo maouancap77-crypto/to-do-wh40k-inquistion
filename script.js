@@ -19,6 +19,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const minuteHand = document.querySelector('.hand.minute');
     const hourHand = document.querySelector('.hand.hour');
     const voxAudio = document.getElementById('vox-audio');
+    // Elementos de áudio
+    const tickSound = document.getElementById('tick-sound');
+    const bgMusic = document.getElementById('bg-music');
+    const toggleMusicBtn = document.getElementById('toggle-music');
+    const musicVolumeSlider = document.getElementById('music-volume');
+
+    // Estado do áudio
+    let tickEnabled = true;
+    let musicEnabled = false;
+    let lastTickTime = 0;
     
     // Variáveis do timer
     let timerInterval = null;
