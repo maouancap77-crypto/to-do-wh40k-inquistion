@@ -979,6 +979,14 @@ button:focus, input:focus, textarea:focus {
 .btn-chrono:hover:not(:disabled) {
     animation: buttonGlow 2s infinite;
 }
+.audio-controls {
+  animation: fadeIn 0.5s ease;
+}
+
+#audio-controls button.btn-chrono:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px var(--glow-gold);
+}
 
 /* Marca d'água da Inquisição */
 .watermark {
