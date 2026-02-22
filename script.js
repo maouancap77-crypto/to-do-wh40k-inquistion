@@ -54,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // 🔊 CARREGAR PREFERÊNCIAS DE ÁUDIO
   loadAudioPrefs();
+  
+  // 🔊 PREVENÇÃO DE BLOQUEIO DE ÁUDIO
+  prepareAudio();
 
   // ==========================================
   // FUNÇÕES AUXILIARES
@@ -131,8 +134,51 @@ document.addEventListener('DOMContentLoaded', function() {
       bgMusic.volume = prefs.volume || 0.3;
     }
     if (prefs.musicEnabled && toggleMusicBtn) {
-      // Não auto-play, apenas prepara o estado
       musicEnabled = false;
+    }
+  }
+
+  // 🔊 PREVENÇÃO DE BLOQUEIO DE ÁUDIO
+  // Solução: Tocar e pausar automaticamente para contornar autoplay policy
+  function prepareAudio() {
+    // Preparar música de fundo
+    if (bgMusic) {
+      bgMusic.volume = 0.01; // Volume mínimo para teste
+      
+      const playPromise = bgMusic.play();
+      
+      if (playPromise !== undefined) {
+        playPromise.then(_ => {
+          // Áudio carregado com sucesso - pausa imediatamente
+          bgMusic.pause();
+          bgMusic.currentTime = 0;
+          bgMusic.volume = 0.3; // Restaura volume normal
+          console.log("🎵 Áudio da Inquisição preparado e pronto!");
+        })
+        .catch(error => {
+          // Navegador bloqueou - isso é esperado
+          console.log("⚠ Áudio será ativado na primeira interação do usuário");
+          bgMusic.volume = 0.3;
+        });
+      }
+    }
+    
+    // Preparar som de tic-tac
+    if (tickSound) {
+      tickSound.volume = 0.01;
+      const tickPromise = tickSound.play();
+      
+      if (tickPromise !== undefined) {
+        tickPromise.then(_ => {
+          tickSound.pause();
+          tickSound.currentTime = 0;
+          tickSound.volume = 0.1;
+        })
+        .catch(error => {
+          console.log("⚠ Tic-tac será ativado no timer");
+          tickSound.volume = 0.1;
+        });
+      }
     }
   }
 
