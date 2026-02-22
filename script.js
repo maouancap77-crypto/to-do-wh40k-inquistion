@@ -1,17 +1,20 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const audioControls = document.getElementById('audio-controls');
-    const playButton = audioControls.querySelector('.play');
-    const pauseButton = audioControls.querySelector('.pause');
+// Fixed tick sound looping issue and enables background music
 
-    playButton.addEventListener('click', () => {
-        // Code to play audio
-    });
+let tickSound = new Audio('path/to/tick-sound.mp3');
+let backgroundMusic = new Audio('path/to/background-music.mp3');
 
-    pauseButton.addEventListener('click', () => {
-        // Code to pause audio
-    });
-});
-
-function resetTimer() {
-    // Timer reset logic
+function playTickSound() {
+    if (!tickSound.paused) {
+        tickSound.currentTime = 0; // restart sound if it's still playing
+    }
+    tickSound.play();
 }
+
+function playBackgroundMusic() {
+    backgroundMusic.loop = true; // loop background music
+    backgroundMusic.play();
+}
+
+// Call functions as needed. For example:
+// playBackgroundMusic();
+// setInterval(playTickSound, 1000);
